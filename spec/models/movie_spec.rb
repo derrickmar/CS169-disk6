@@ -39,4 +39,21 @@ RSpec.describe Movie, type: :model do
       }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  describe "from Paramount" do
+    let(:movies_paramount) do
+      movies = [
+        {:name => 'Star Trek', :rating => 8.0},
+        {:name => 'The Wolf of Wall Street', :rating => 9.2}
+      ]
+      movies.map { |m| Movie.new(m) }
+    end
+
+    it "should return a valid list of movies" do
+      movies = Movie.from_paramount
+      movies.each do |movie|
+        expect(movie).to be_a(Movie)
+      end
+    end
+  end
 end
