@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Movies.create(:name => 'The Silence of the Lambs', :rating => 8.6)
+Movies.create(:name => 'Legally Blonde', :rating => 6.2)
+Movies.create(:name => 'How to Train Your Dragon', :rating => 8.2)
