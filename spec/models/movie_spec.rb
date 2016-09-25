@@ -7,13 +7,13 @@ RSpec.describe Movie, type: :model do
     it "should not be nil" do
       expect {
         Movie.create!(:rating => rating)
-      }.to raise_error
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "should not be blank" do
       expect {
         Movie.create!(:name => '', :rating => rating)
-      }.to raise_error
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 
@@ -30,13 +30,13 @@ RSpec.describe Movie, type: :model do
     it "should not be greater than 10" do
       expect {
         Movie.create!(:name => movie_name, :rating => 10.1)
-      }.to raise_error
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it "should not be less than 0" do
       expect {
         Movie.create!(:name => movie_name, :rating => -0.1)
-      }.to raise_error
+      }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end
