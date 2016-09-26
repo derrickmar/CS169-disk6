@@ -39,8 +39,8 @@ RSpec.describe Movie, type: :model do
       }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
-
-  describe "from Paramount" do
+  
+  describe "API movie calls" do
     let(:movies_paramount) do
       movies = [
         {:name => 'Star Trek', :rating => 8.0},
@@ -48,12 +48,41 @@ RSpec.describe Movie, type: :model do
       ]
       movies.map { |m| Movie.new(m) }
     end
-
-    it "should return a valid list of movies" do
-      movies = Movie.from_paramount
-      movies.each do |movie|
-        expect(movie).to be_a(Movie)
+    
+    before :each do
+      allow(Movie).to receive(:from_paramount) { movies_paramount }
+    end
+  
+    describe ".from_paramount" do
+      it "should return a valid list of movies" do
+        movies = Movie.from_paramount
+        movies.each do |movie|
+          expect(movie).to be_a(Movie)
+        end
       end
+    end
+  end
+  
+  describe ".average_paramount_rating" do
+    it "should return the correct average" do
+      movies = [
+        {:name => 'Star Trek', :rating => 8.0},
+        {:name => 'The Wolf of Wall Street', :rating => 9.2}
+      ]
+      
+      Movie.stub(:from_paramount).and_return(movies.map { |m| Movie.new(m) })
+      expect(Movie.average_paramount_rating).to eq(8.6)
+    end
+    
+        it "should return the correct average with 0 ratings" do
+      movies = [
+        {:name => 'Star Trek', :rating => 0.0},
+        {:name => 'The Wolf of Wall Street', :rating => 0.0},
+        {:name => 'Star Trek 2', :rating => 0.0},
+      ]
+      
+      Movie.stub(:from_paramount).and_return(movies.map { |m| Movie.new(m) })
+      expect(Movie.average_paramount_rating).to eq(0.0)
     end
   end
 end
