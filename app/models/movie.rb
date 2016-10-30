@@ -1,7 +1,10 @@
 class Movie < ActiveRecord::Base
+  validates :name, presence: true, allow_blank: false
+  validates :rating, inclusion: 1..10
+  
   # Pretends to hit some API, which would presumably incur some network latency.
   def self.from_paramount()
-    sleep(10)
+    # sleep(10)
 
     movies = [
       {:name => 'Star Trek', :rating => 8.0},
@@ -13,7 +16,9 @@ class Movie < ActiveRecord::Base
   end
 
   # Implement yourself.
-  def self.average_paramount_rating()
-    return 0.0
+  def self.average_paramount_rating
+    ratings = self.from_paramount.map(&:rating)
+    ratings.inject(0.0) { |sum, el| sum + el } / ratings.size
   end
+  
 end
